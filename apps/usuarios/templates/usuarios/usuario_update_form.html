@@ -1,0 +1,33 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <form id="form_modal_data" method="post" data-url="{{ form_url }}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_data_label">{{ modal_title }}</h5>
+                <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        {{ form.groups.label }}
+                        {{ form.groups }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.select-two').select2({
+            dropdownParent: $('#modal_data'),
+            theme: "bootstrap-5"
+        });
+    });
+</script>

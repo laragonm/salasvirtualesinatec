@@ -1,0 +1,290 @@
+/* Inicio Loader */
+
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: none;
+}
+
+#loader-wrapper .loader-section {
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: rgba(4, 4, 4, 0.8);
+    z-index: 1000;
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+}
+
+#loader-wrapper .section-left {
+    left: 0;
+    display: none;
+}
+
+#loader-wrapper .section-right {
+    right: 0;
+    display: none;
+}
+
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #3498db;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    z-index: 1001;
+}
+
+#loader {
+    display: none;
+}
+
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #e74c3c;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+
+#loader-logo {
+    display: block;
+    position: absolute;
+    left: 48%;
+    top: 46%;
+    z-index: 1001;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.select-row {
+    background: rgba(3, 169, 244, 0.41) !important;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.loaded #loader-wrapper {
+    visibility: hidden;
+    -webkit-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);
+    -webkit-transition: all 0.3s 1s ease-out;
+    transition: all 0.3s 1s ease-out;
+}
+
+.loaded #loader-wrapper .section-left {
+    -webkit-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.loaded #loader-wrapper .section-right {
+    right: 0;
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+    -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.loaded #loader {
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+/* Fin Loader */
+
+/* Colores */
+
+.bg-azul {
+    background-color: #165C92 !important;
+}
+
+.bg-celeste {
+    background-color: #0098D8 !important;
+}
+
+.bg-rosa {
+    background-color: #E30B7B !important;
+}
+
+.bg-verde {
+    background-color: #88BA40 !important;
+}
+
+.sb-sidenav-celeste {
+    background-color: #0098D8 !important;
+    color: white !important;
+}
+
+/* Fin Colores */
+
+/* Fix navlink */
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.sb-topnav.navbar-dark #sidebarToggle {
+    color: white !important;
+}
+
+.sb-sidenav-dark .sb-sidenav-menu .nav-link {
+    color: white !important;
+}
+
+/* Fix navlink */
+
+/* Fix Navbar Logos */
+
+.w-sm-100 {
+    width: 100% !important;
+}
+
+.pt-logo {
+    padding-top: 4rem !important;
+}
+
+.mt-logo {
+    margin-top: 1rem !important;
+}
+
+.mt-footer {
+    margin-top: 4rem !important;
+}
+
+.my-recurrente {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.my-codigo {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.py-dias {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .py-logo {
+        padding-top: 4rem !important;
+        padding-bottom: 4rem !important;
+    }
+
+    .pt-logo {
+        padding-top: 8rem !important;
+    }
+
+    .mt-logo {
+        margin-top: 5rem !important;
+    }
+
+    .img-logo {
+        height: 4rem !important;
+        margin-left: 1rem !important;
+    }
+
+    .w-sm-100 {
+        width: auto !important;
+    }
+
+    .pr-logo {
+        padding-right: 1rem !important;
+    }
+
+    .my-recurrente {
+        margin-top: 1.8rem !important;
+    }
+
+    .my-codigo {
+        margin-top: 1.8rem !important;
+    }
+
+    .py-centro {
+        margin-top: 3rem !important;
+    }
+
+    .py-dias {
+        padding-top: 0.5rem!important;
+    }
+}
+
+@media (min-width: 992px) {
+    .img-logo {
+        height: 4rem !important;
+        margin-left: 5rem !important;
+    }
+
+    .pr-logo {
+        padding-right: 6rem !important;
+    }
+}
+
+@media (min-width: 1600px) {
+    .mt-footer {
+        margin-top: auto !important;
+    }
+
+    .img-logo {
+        height: 4rem !important;
+        margin-left: 6rem !important;
+    }
+
+    .pr-logo {
+        padding-right: 24rem !important;
+    }
+}
+
+
+/* Fix Navbar Logos */

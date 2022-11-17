@@ -1,0 +1,135 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <form id="form_modal_data" method="post" data-url="{{ form_url }}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_data_label">{{ modal_title }} {{ solicitud }}</h5>
+                <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="id" name="id" value="{{ solicitud.id }}">
+                <div class="row">
+                    <div class="col">
+                        {{ form.tema.label }}
+                        {{ form.tema }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.agenda.label }}
+                        {{ form.agenda }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.fecha_inicio.label }}
+                        {{ form.fecha_inicio }}
+                    </div>
+                    <div class="col">
+                        {{ form.hora_inicio.label }}
+                        {{ form.hora_inicio }}
+                    </div>
+                    <div class="col">
+                        {{ form.hora_fin.label }}
+                        {{ form.hora_fin }}
+                    </div>
+                </div>
+                <input type="hidden" id="aplica_sel" value="{{ solicitud.aplica_cod }}">
+                <input type="hidden" id="aprobado_sel" value="{{ solicitud.autorizacion_cod }}">
+                <div class="row">
+                    {% if aplica_aprobacion %}
+                        <div class="col-sm-12 col-md-6">
+                            <label for="aplica_aprobacion">Aplica Autorización: </label>
+                            <br>
+                            <select name="aplica_aprobacion" id="aplica_aprobacion" class="form-control" placeholder="Seleccione el motivo de rechazo" style="text-align: left" required>
+                                <option value="">Seleccione una opción</option>
+                                {% for x in aplica_aprobacion %}
+                                    <option value ="{{x.0}}">
+                                        {{x.0}} - {{x.1}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if aprobado %}
+                        <div class="col-sm-12 col-md-6">
+                            <label for="aprobado">Autorización: </label>
+                            <br>
+                            <select name="aprobado" id="aprobado" class="form-control" placeholder="Seleccione el motivo de rechazo" style="text-align: left" disabled>
+                                <option value="">Seleccione si está aprobado</option>
+                                {% for x in aprobado %}
+                                    <option value ="{{x.0}}">
+                                        {{x.0}} - {{x.1}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    HORA_INICIO = $('#id_hora_inicio');
+    HORA_FIN = $('#id_hora_fin');
+    FECHA_INICIO = $('#id_fecha_inicio');
+    APLICA_SEL = $('#aplica_sel').val();
+    APROBADO_SEL = $('#aprobado_sel').val();
+
+    if (APLICA_SEL==1){
+        const aprobar1 = document.getElementById('aprobado');
+        aprobar1.setAttribute('required', '');
+        aprobar1.removeAttribute('disabled');
+    }
+
+    $("#aplica_aprobacion").val(APLICA_SEL);
+    $("#aprobado").val(APROBADO_SEL);
+
+    $(document).ready(function () {
+        HORA_INICIO.timepicker({
+            'timeFormat': 'H:i:s',
+            'minTime': '06:00am',
+            'maxTime': '09:00pm',
+            'step': 30
+        });
+
+        HORA_FIN.timepicker({
+            'timeFormat': 'H:i:s',
+            'minTime': '06:00am',
+            'maxTime': '09:00pm',
+            'step': 30
+        });
+
+         FECHA_INICIO.datepicker({
+            startDate: "{{ fecha_inicio|date:'d/m/Y' }}",
+            endDate: "{{ fecha_fin|date:'d/m/Y' }}",
+            maxViewMode: 1,
+            autoclose: true,
+            language: "es"
+        });
+
+         $(document).off("change", "#aplica_aprobacion").on("change", "#aplica_aprobacion", function () {
+            //let requiere = $("#aplica_aprobacion").val();
+            let requiere = $(this).val();
+            const aprobar = document.getElementById('aprobado');
+
+            // ✅ Set the disabled attribute
+            if (requiere == '1') {
+                aprobar.setAttribute('required', '');
+                aprobar.removeAttribute('disabled');
+            } else {
+                $("#aprobado").val("");
+                aprobar.setAttribute('disabled', '');
+                aprobar.removeAttribute('required');
+            }
+        });
+
+    });
+</script>

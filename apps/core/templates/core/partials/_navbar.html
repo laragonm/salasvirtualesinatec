@@ -1,0 +1,31 @@
+{% load static %}
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-celeste py-logo">
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-none d-md-flex">
+            <img class="img-fluid img-logo" src="{% static 'core/images/logo_gobierno.png' %}" alt="...">
+            <img class="img-fluid img-logo" src="{% static 'core/images/logo_inatec.png' %}" alt="...">
+        </div>
+        <div class="d-none d-lg-flex pr-logo">
+            <strong class="display-6 fntOfficinaSerifBold" id="txtTitulo" style=" color: #FFF; font-weight: 700;">Gestión de Salas Virtuales</strong>
+        </div>
+        <div class="d-flex w-sm-100">
+            <button class="btn btn-link btn-sm ps-sm-3 order-md-1 pe-md-3" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-nav ms-auto me-sm-3 me-md-1">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"><i class="fas fa-user fa-fw"></i>{{ user }}</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item"
+                               href="{% url 'usuarios:logout' %}?next={{ request.path }}">Salir</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+

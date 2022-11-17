@@ -1,0 +1,238 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <form id="form_modal_data" method="post" data-url="{{ form_url }}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_data_label">{{ modal_title }}</h5>
+                <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-none">
+                    {{ form.codigo.label }}
+                    {{ form.codigo }}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.tema.label }}
+                        {{ form.tema }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="id_agenda">Agenda</label>
+                        <textarea name="agenda" id="id_agenda" rows="2" maxlength="2000"
+                                  class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-3">
+                        {{ form.fecha_inicio.label }}
+                        {{ form.fecha_inicio }}
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        {{ form.hora_inicio.label }}
+                        {{ form.hora_inicio }}
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        {{ form.hora_fin.label }}
+                        {{ form.hora_fin }}
+                    </div>
+                    <div class="col-sm-12 col-md-3 my-recurrente">
+                        {{ form.es_recurrente.label }}
+                        {{ form.es_recurrente }}
+                    </div>
+                </div>
+                <div class="row d-none" id="id_fila_recurrente">
+                    <div class="col-sm-12 col-md-9 py-dias" id="id_dias">
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_0" class="form-check-label">Lunes</label>
+                            <input type="checkbox" name="dias" value="1" class="form-check-input" id="id_dias_0">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_1" class="form-check-label">Martes</label>
+                            <input type="checkbox" name="dias" value="2" class="form-check-input" id="id_dias_1">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_2" class="form-check-label">Miercoles</label>
+                            <input type="checkbox" name="dias" value="3" class="form-check-input" id="id_dias_2">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_3" class="form-check-label">Jueves</label>
+                            <input type="checkbox" name="dias" value="4" class="form-check-input" id="id_dias_3">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_4" class="form-check-label">Viernes</label>
+                            <input type="checkbox" name="dias" value="5" class="form-check-input" id="id_dias_4">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_5" class="form-check-label">Sabado</label>
+                            <input type="checkbox" name="dias" value="6" class="form-check-input" id="id_dias_5">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label for="id_dias_6" class="form-check-label">Domingo</label>
+                            <input type="checkbox" name="dias" value="7" class="form-check-input" id="id_dias_6">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        {{ form.fecha_fin.label }}
+                        {{ form.fecha_fin }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-9">
+                        {{ form.sala.label }}
+                        {{ form.sala }}
+                    </div>
+                    <div class="col-sm-12 col-md-3 my-codigo">
+                        {{ form.usa_codigo_acceso.label }}
+                        {{ form.usa_codigo_acceso }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-9">
+                        {{ form.centros.label }}
+                        {{ form.centros }}
+                    </div>
+                    <div class="col-sm-12 col-md-3 py-centro">
+                        {{ form.todos_centros.label }}
+                        {{ form.todos_centros }}
+                    </div>
+                </div>
+                <div class="row">
+                    {% if aplica_aprobacion %}
+                        <div class="col-sm-12 col-md-6">
+                            <label for="aplica_aprobacion">Aplica Autorización: </label>
+                            <br>
+                            <select name="aplica_aprobacion" id="aplica_aprobacion" class="form-control" placeholder="Seleccione el motivo de rechazo" style="text-align: left" required>
+                                <option value="">Seleccione una opción</option>
+                                {% for x in aplica_aprobacion %}
+                                    <option value ="{{x.0}}">
+                                        {{x.0}} - {{x.1}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if aprobado %}
+                        <div class="col-sm-12 col-md-6">
+                            <label for="aprobado">Autorización: </label>
+                            <br>
+                            <select name="aprobado" id="aprobado" class="form-control" placeholder="Seleccione el motivo de rechazo" style="text-align: left" disabled>
+                                <option value="">Seleccione si está aprobado</option>
+                                {% for x in aprobado %}
+                                    <option value ="{{x.0}}">
+                                        {{x.0}} - {{x.1}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-warning">Solicitar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    ID_SALA = $('#id_sala');
+    ID_SALA_OPTIONS = $('#id_sala option');
+    FECHA_INICIO = $('#id_fecha_inicio');
+    FECHA_FIN = $('#id_fecha_fin');
+    HORA_INICIO = $('#id_hora_inicio');
+    HORA_FIN = $('#id_hora_fin');
+    TODOS_CENTROS = $('#id_todos_centros');
+    CENTROS = $('#id_centros');
+    CENTROS_OPTIONS = $('#id_centros option');
+    ES_RECURRENTE = $('#id_es_recurrente');
+    FILA_RECURRENTE = $('#id_fila_recurrente');
+
+    $(document).ready(function () {
+        $('.select-two').select2({
+            dropdownParent: $('#modal_data'),
+            theme: "bootstrap-5"
+        });
+
+        if (ID_SALA_OPTIONS.length === 2) {
+            ID_SALA.val(ID_SALA_OPTIONS.eq(1).val());
+            ID_SALA.parent().attr('class', 'd-none')
+        }
+
+        FECHA_INICIO.datepicker({
+            startDate: "{{ fecha_inicio|date:'d/m/Y' }}",
+            endDate: "{{ fecha_fin|date:'d/m/Y' }}",
+            maxViewMode: 1,
+            autoclose: true,
+            language: "es"
+        });
+
+        FECHA_FIN.datepicker({
+            startDate: "{{ fecha_inicio|date:'d/m/Y' }}",
+            endDate: "{{ fecha_fin|date:'d/m/Y' }}",
+            maxViewMode: 1,
+            autoclose: true,
+            language: "es"
+        }).prop('required', false);
+
+        HORA_INICIO.timepicker({
+            'timeFormat': 'H:i:s',
+            'minTime': '06:00am',
+            'maxTime': '09:00pm',
+            'step': 30
+        });
+
+        HORA_FIN.timepicker({
+            'timeFormat': 'H:i:s',
+            'minTime': '06:00am',
+            'maxTime': '09:00pm',
+            'step': 30
+        });
+
+        CENTROS.val([CENTROS_OPTIONS.eq(0).val()]).trigger('change');
+
+        TODOS_CENTROS.change(function () {
+            const estado = $(this).prop('checked');
+            if (estado) {
+                let options = [];
+                CENTROS_OPTIONS.each(function (i, el) {
+                    options[i] = $(el).val();
+                });
+                CENTROS.val([]).val(options).trigger('change');
+            } else {
+                CENTROS.val([]).trigger('change');
+                CENTROS.val([CENTROS_OPTIONS.eq(0).val()]).trigger('change');
+            }
+        });
+
+        ES_RECURRENTE.change(function () {
+            const estado = $(this).prop('checked');
+            if (estado) {
+                FILA_RECURRENTE.removeClass('d-none');
+                FECHA_FIN.prop('required', true);
+            } else {
+                FILA_RECURRENTE.addClass('d-none');
+                FECHA_FIN.prop('required', false);
+            }
+        });
+
+        $(document).off("change", "#aplica_aprobacion").on("change", "#aplica_aprobacion", function () {
+            //let requiere = $("#aplica_aprobacion").val();
+            let requiere = $(this).val();
+            const aprobar = document.getElementById('aprobado');
+
+            // ✅ Set the disabled attribute
+            if (requiere == '1') {
+                aprobar.setAttribute('required', '');
+                aprobar.removeAttribute('disabled');
+            } else {
+                $("#aprobado").val("");
+                aprobar.setAttribute('disabled', '');
+                aprobar.removeAttribute('required');
+            }
+        });
+    });
+</script>

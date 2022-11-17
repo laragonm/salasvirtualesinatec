@@ -1,0 +1,31 @@
+<div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_data_label"><i class="fa fa-video"></i> {{ modal_title }}</h5>
+            <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <video id="video_instructivo" class="w-100" autoplay controls>
+                        <source src="{{ instructivo.archivo.url }}">
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btn_video_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    BTN_VIDEO_CLOSE = $('#btn_video_close');
+    VIDEO_INSTRUCTIVO = $('#video_instructivo')[0];
+
+    BTN_VIDEO_CLOSE.click(function (e) {
+        e.preventDefault();
+        VIDEO_INSTRUCTIVO.pause();
+    })
+</script>

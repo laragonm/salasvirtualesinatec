@@ -1,0 +1,87 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_data_label">Detalle Solicitud {{ solicitud }}</h5>
+            <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <strong>Solicitante:</strong> {{ solicitud.solicitante }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <strong>Tema:</strong> {{ solicitud.tema }}
+                </div>
+            </div>
+            {% if solicitud.agenda %}
+                <div class="row">
+                    <div class="col">
+                        <strong>Agenda:</strong> {{ solicitud.agenda }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <strong>Sala:</strong> {{ solicitud.sala }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% if solicitud.es_recurrente %}
+                        <p class="m-0">
+                            <strong>Fecha Inicio:</strong> {{ solicitud.fecha_inicio_formato }} <br>
+                            <strong>Fecha Fin:</strong> {{ solicitud.fecha_fin_formato }}
+                        </p>
+                    {% else %}
+                        <strong>Fecha:</strong> {{ solicitud.fecha_inicio_formato }}
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <strong>Horario:</strong> {{ solicitud.horario }}
+                </div>
+            </div>
+            {% if solicitud.es_recurrente %}
+                <div class="row">
+                    <div class="col">
+                        <strong>Dias:</strong>
+                        <ul class="m-0">
+                            {% for dia in solicitud.dias.all %}
+                                <li>{{ dia }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <strong>Centros Partipantes:</strong>
+                    <ul class="m-0">
+                        {% for centro in solicitud.centros_display %}
+                            <li>{{ centro }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <strong>Requiere Autorización:</strong>
+                    <ul class="m-0">
+                            <li>{{ solicitud.aplica }}</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <strong>Autorización:</strong>
+                    <ul class="m-0">
+                            <li>{{ solicitud.autorizacion }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>

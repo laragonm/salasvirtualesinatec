@@ -1,0 +1,83 @@
+{% load static helpers %}
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>INATEC</title>
+    <link rel="icon" href="{% static 'core/images/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/sb-admin/css/sb-admin.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/sweetalert2/css/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/datatables/css/dataTables.bootstrap5.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/datatables/css/responsive.bootstrap5.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/datatables/css/scroller.bootstrap5.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/jquery-timepicker/css/jquery.timepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/core.min.css' %}">
+    <style>
+        @font-face {
+            font-family: OfficinaSerifBold;
+            src: url("{% static 'core/fonts/officina_serif_bold.otf' %}") format("opentype");
+        }
+
+        .fntOfficinaSerifBold {
+            font-family: OfficinaSerifBold;
+        }
+
+        @media only screen and (max-width: 1300px) {
+            .pr-logo {
+                display: none !important;
+            }
+
+        }
+    </style>
+    {% block styles %}
+    {% endblock %}
+    {% block extra_styles %}
+    {% endblock %}
+</head>
+<body class="sb-nav-fixed">
+{% include 'core/partials/_loader.html' %}
+{% include 'core/partials/_navbar.html' %}
+<div id="layoutSidenav">
+    {% include 'core/partials/_sidebar.html' %}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid mt-logo">
+                <section id="message_loader">
+                </section>
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+</div>
+{% include 'core/partials/_footer.html' %}
+{% block modals %}
+{% endblock %}
+<script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'core/vendor/jquery/js/jquery.min.js' %}"></script>
+<script src="{% static 'core/vendor/jquery/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'core/vendor/jquery/js/jquery.waiting.js' %}"></script>
+<script src="{% static 'core/vendor/sweetalert2/js/sweetalert2.min.js' %}"></script>
+<script src="{% static 'core/vendor/font-awesome/js/all.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/dataTables.scroller.min.js' %}"></script>
+<script src="{% static 'core/vendor/datatables/js/scroller.bootstrap5.min.js' %}"></script>
+<script src="{% static 'core/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'core/vendor/bootstrap-datepicker/js/bootstrap-datepicker.es.min.js' %}"></script>
+<script src="{% static 'core/vendor/jquery-timepicker/js/jquery.timepicker.min.js' %}"></script>
+<script src="{% static 'core/vendor/sb-admin/js/sb-admin.min.js' %}"></script>
+<script src="{% static 'core/js/core.min.js' %}"></script>
+{% block scripts %}
+{% endblock %}
+{% block extra_scripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block content %}
+    <div class="card my-3">
+        <div class="card-header d-flex justify-content-between">
+            <div>
+                Listado de Areas
+            </div>
+            <div>
+                <button id="btn_sync" class="btn btn-outline-warning" data-url="{% url 'catalogos:areas_sync' %}">
+                    <i class="fas fa-sync"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="tb_data" class="table">
+                <thead>
+                <tr>
+                    <th>ID Area</th>
+                    <th>Nombre</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    <div class="modal fade" id="modal_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modal_data_label" aria-hidden="true">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const TB_DATA = $('#tb_data');
+        const BTN_SYNC = $('#btn_sync');
+        const MODAL_DATA = $('#modal_data');
+
+        $(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            TB_DATA.DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ordering: false,
+                deferRender: true,
+                language: {
+                    url: '{% static 'core/json/spanish.json' %}'
+                },
+                ajax: {
+                    url: window.location.pathname,
+                    type: 'post',
+                    dataSrc: ''
+                },
+                columns: [
+                    {'data': 'id_area'},
+                    {'data': 'nombre'},
+                ]
+            });
+        }
+
+        BTN_SYNC.click(function (event) {
+            event.preventDefault();
+            const url = $(this).data('url');
+            MODAL_DATA.empty().load(url, function () {
+                $(this).modal('show');
+            });
+        });
+
+        $(document).on('submit', '#form_modal_data', function (event) {
+            event.preventDefault();
+            const frm = $(this).get(0);
+            const form = new FormData(frm);
+            $('#form_modal_data :submit').attr('disabled', 'true');
+            $.ajax({
+                url: $(this).data('url'),
+                type: 'post',
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: form
+            }).done(function (data) {
+                if (!data.hasOwnProperty('error')) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.success
+                    });
+                    $('#btn_modal_close').click();
+                    $('#form_modal_data :submit').removeAttr('disabled');
+                    setTimeout(function () {
+                        loadDataTable();
+                    }, timer);
+                } else {
+                    $('#form_modal_data :submit').removeAttr('disabled');
+                    messageError(data.error)
+                }
+            });
+        });
+    </script>
+{% endblock %}

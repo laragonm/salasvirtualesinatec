@@ -1,0 +1,52 @@
+{% load helpers %}
+
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark bg-azul pt-logo" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                {% comment %}
+                <a class="nav-link" href="{% url 'core:home' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Home
+                </a>
+                {% endcomment %}
+                <a class="nav-link" href="{% url 'solicitudes:calendario' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-week"></i></div>
+                    Calendario
+                </a>
+                <a class="nav-link" href="{% url 'solicitudes:solicitudes' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-cloud"></i></div>
+                    Solicitudes
+                </a>
+                {% if user.is_superuser or user|has_group:'administrador' %}
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#catalogos"
+                       aria-expanded="false" aria-controls="catalogos">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Catálogos
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="catalogos" aria-labelledby="headingOne"
+                         data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{% url 'catalogos:salas' %}">Salas</a>
+                            <a class="nav-link" href="{% url 'catalogos:areas' %}">Áreas</a>
+                            <a class="nav-link" href="{% url 'catalogos:centros' %}">Centros</a>
+                        </nav>
+                    </div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#administracion"
+                       aria-expanded="false" aria-controls="administracion">
+                        <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
+                        Administración
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="administracion" aria-labelledby="headingOne"
+                         data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{% url 'usuarios:usuarios' %}">Usuarios</a>
+                        </nav>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</div>

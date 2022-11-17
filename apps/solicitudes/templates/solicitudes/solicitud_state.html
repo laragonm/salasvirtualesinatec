@@ -1,0 +1,39 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form id="form_modal_data" method="post" data-url="{{ form_url }}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_data_label">{{ modal_title }}</h5>
+                <button type="button" class="btn-close" id="btn_modal_close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <p class="lead">Esta seguro de {{ action }} la solicitud?</p>
+                    </div>
+                </div>
+                {% if motivos_rechazo %}
+                    <div class="row">
+                        <div class="col">
+                            <label for="motivo_rechazo"><b>Motivo de Rechazo: </b></label>
+                            <br>
+                            <select name="motivo_rechazo" id="motivo_rechazo" class="form-control" placeholder="Seleccione el motivo de rechazo" style="text-align: left">
+                                {% for x in motivos_rechazo %}
+                                    <option value ="{{x.0}}">
+                                        {{x.0}} - {{x.1}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn {{ btn_submit }}">{{ action | capfirst }}</button>
+            </div>
+        </form>
+    </div>
+</div>

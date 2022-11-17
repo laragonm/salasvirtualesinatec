@@ -1,0 +1,99 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'core/vendor/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/select2/css/select2-bootstrap-5-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/fullcalendar/css/main.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div>
+                Calendario
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="salas">Sala</label>
+                    <select class="form-control select-two" name="salas" id="salas">
+                        <option value selected disabled>---------</option>
+                        {% for sala in salas %}
+                            <option value="{{ sala.id }}">{{ sala.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col">
+                    <div id='calendar'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    <div class="modal fade" id="modal_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modal_data_label" aria-hidden="true">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'core/vendor/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'core/vendor/fullcalendar/js/main.min.js' %}"></script>
+    <script src="{% static 'core/vendor/fullcalendar/js/locales-all.min.js' %}"></script>
+    <script>
+        const SALAS = $('#salas');
+        const SALAS_OPTION = $('#salas option');
+
+        $(function () {
+            SALAS.select2({
+                theme: "bootstrap-5"
+            });
+
+            if (SALAS_OPTION.length === 2) {
+                SALAS.val(SALAS_OPTION.eq(1).val()).change();
+                SALAS.parent().attr('class', 'd-none')
+            }
+        });
+
+        SALAS.change(function (event) {
+            event.preventDefault();
+            loadCalendar();
+        });
+
+        function loadCalendar() {
+            $.ajax({
+                url: '{% url 'solicitudes:solicitud_json' %}',
+                dataType: 'json',
+                data: {'id_sala': SALAS.val()},
+                success: function (response) {
+                    if (response) {
+                        let calendarEl = $('#calendar')[0];
+                        let calendar = new FullCalendar.Calendar(calendarEl, {
+                            initialDate: '{% now 'Y-m-d' %}',
+                            initialView: 'timeGridWeek',
+                            expandRows: true,
+                            slotMinTime: '06:00',
+                            slotMaxTime: '21:00',
+                            headerToolbar: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                            },
+                            locale: 'es',
+                            navLinks: true,
+                            events: response
+                        });
+                        calendar.render();
+                    }
+
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'core/vendor/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/vendor/select2/css/select2-bootstrap-5-theme.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div>
+                Listado de Solicitudes
+            </div>
+            <div>
+                {% if instructivo %}
+                    <button id="btn_video" class="btn btn-outline-info"
+                            data-url="{% url 'solicitudes:solicitud_instructivo' %}">
+                        <i class="fas fa-video"></i> Instructivo
+                    </button>
+                {% endif %}
+                <button id="btn_add" class="btn btn-outline-warning"
+                        data-url="{% url 'solicitudes:solicitud_create' %}">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="tb_data" class="table table-sm">
+                <thead>
+                <tr>
+                    <th>Solicitud</th>
+                    <th>Tema</th>
+                    <th>Sala</th>
+                    <th>Fecha</th>
+                    <th>Horario</th>
+                    <th>Solicitante</th>
+                    <th>Estado</th>
+                    <th>Link Invitado</th>
+                    <th>Link Host</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    <div class="modal fade" id="modal_data" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modal_data_label" aria-hidden="true">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'core/vendor/select2/js/select2.min.js' %}"></script>
+    <script>
+        const TB_DATA = $('#tb_data');
+        const BTN_ADD = $('#btn_add');
+        const BTN_VIDEO = $('#btn_video');
+        const MODAL_DATA = $('#modal_data');
+        let ID_SALA = $('#id_sala');
+        let ID_SALA_OPTIONS = $('#id_sala option');
+        let FECHA_INICIO = $('#id_fecha_inicio');
+        let HORA_INICIO = $('#id_hora_inicio');
+        let HORA_FIN = $('#id_hora_fin');
+        let TODOS_CENTROS = $('#id_todos_centros');
+        let CENTROS = $('#id_centros');
+        let CENTROS_OPTIONS = $('#id_centros option');
+        let ES_RECURRENTE = $('#id_es_recurrente');
+        let FILA_RECURRENTE = $('#id_fila_recurrente');
+
+        $(function () {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            TB_DATA.DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ordering: false,
+                deferRender: true,
+                language: {
+                    url: '{% static 'core/json/spanish.json' %}'
+                },
+                ajax: {
+                    url: window.location.pathname,
+                    type: 'post',
+                    dataSrc: ''
+                },
+                columns: [
+                    {'data': 'codigo'},
+                    {'data': 'tema'},
+                    {'data': 'sala'},
+                    {'data': 'fecha_rango'},
+                    {'data': 'horario'},
+                    {'data': 'solicitante'},
+                    {'data': 'estado_display'},
+                    {'data': 'estado'},
+                    {'data': 'estado'},
+                    {'data': 'estado'}
+                ],
+                columnDefs: [
+                    {
+                        targets: [-1],
+                        class: 'text-center',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            let html_ = '';
+                            if (row.estado === 1) {
+                                html_ += `<button class="btn btn-outline-success btn-sm btn-edit me-1" title="Aprobar" data-url="${row.url_aprobar}"><i class="fa fa-check-square"></i></button>`;
+                                html_ += `<button class="btn btn-outline-danger btn-sm btn-edit me-1" title="Rechazar" data-url="${row.url_rechazar}"><i class="fa fa-window-close"></i></button>`;
+                                html_ += `<button class="btn btn-outline-info btn-sm btn-edit me-1" title="Detalle" data-url="${row.url_detalle}"><i class="fa fa-list"></i></button>`;
+                                if (row.recurrente !== 1) {
+                                    html_ += `<button class="btn btn-outline-warning btn-sm btn-edit" title="Actualizar" data-url="${row.url_actualizar}"><i class="fa fa-edit"></i></button>`;
+                                }
+                            }
+                            if (row.estado === 2) {
+                                html_ += `<button class="btn btn-outline-danger btn-sm btn-edit me-1" title="Anular" data-url="${row.url_anular}"><i class="fa fa-trash"></i></button>`;
+                                html_ += `<button class="btn btn-outline-info btn-sm btn-edit me-1" title="Detalle" data-url="${row.url_detalle}"><i class="fa fa-list"></i></button>`;
+                                if (row.recurrente !== 1) {
+                                    html_ += `<button class="btn btn-outline-warning btn-sm btn-edit" title="Actualizar" data-url="${row.url_actualizar}"><i class="fa fa-edit"></i></button>`;
+                                }
+                            }
+                            return html_;
+                        }
+                    },
+                    {
+                        targets: [-2],
+                        class: 'text-center',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            let html_ = '';
+                            if (row.estado === 2) {
+                                html_ = `<a href="${row.zoom_start_url}">Link Host</a>`
+                            }
+                            return html_;
+                        }
+                    },
+                    {
+                        targets: [-3],
+                        class: 'text-center',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            let html_ = '';
+                            if (row.estado === 2) {
+                                html_ = `<a href="${row.zoom_join_url}">${row.zoom_join_url}</a>`
+                            }
+                            return html_;
+                        }
+                    }
+                ],
+            });
+        }
+
+        BTN_ADD.click(function (event) {
+            event.preventDefault();
+            const url = $(this).data('url');
+            MODAL_DATA.empty().load(url, function () {
+                $(this).modal('show');
+            });
+        });
+
+        BTN_VIDEO.click(function (event) {
+            event.preventDefault();
+            const url = $(this).data('url');
+            MODAL_DATA.empty().load(url, function () {
+                $(this).modal('show');
+            });
+        });
+
+        $(document).on('submit', '#form_modal_data', function (event) {
+            event.preventDefault();
+            const frm = $(this).get(0);
+            const form = new FormData(frm);
+            $('#form_modal_data :submit').attr('disabled', 'true');
+            showLoad();
+            $.ajax({
+                url: $(this).data('url'),
+                type: 'post',
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: form
+            }).done(function (data) {
+                showLoad(false);
+                if (!data.hasOwnProperty('error')) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.success
+                    });
+                    $('#btn_modal_close').click();
+                    $('#form_modal_data :submit').removeAttr('disabled');
+                    setTimeout(function () {
+                        loadDataTable();
+                    }, timer);
+                } else {
+                    $('#form_modal_data :submit').removeAttr('disabled');
+                    messageError(data.error)
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-edit', function (event) {
+            event.preventDefault();
+            showModal(this);
+        });
+
+        function showModal(obj) {
+            const url = $(obj).data('url');
+            MODAL_DATA.empty().load(url, function () {
+                $(this).modal('show');
+            });
+        }
+    </script>
+{% endblock %}
